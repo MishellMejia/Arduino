@@ -1,0 +1,288 @@
+//////////////////// UNIVERSIDAD TECNICA DEL NORTE /////////////////////////////
+///////////// FACULTA DE INGENIERIA EN CIENCIAS APLICADAS /////////////////////
+
+///NOMBRE: Mejia Mishel /////////
+/// CARRERA: CIERCOM //////////////////
+/// FECHA: 19 DE ENERO DEL 2017 //////////////
+
+
+
+
+
+//////////Timer/////////////////////////
+#include <TimerOne.h>
+////////////////////////LCD////////////////////
+
+#include <Keypad.h>
+
+const byte ROWS = 4; //four rows
+const byte COLS = 4; //four columns
+//define the cymbols on the buttons of the keypads
+char hexaKeys[ROWS][COLS] = {
+  {'7', '8', '9', '/'},
+  {'4', '5', '6', '*'},
+  {'1', '2', '3', '-'},
+  {'*', '0', '#', '+'}
+};
+byte rowPins[ROWS] = {3, 2, 9, 8}; //connect to the row pinouts of the keypad
+byte colPins[COLS] = {7, 6, 5, 4}; //connect to the column pinouts of the keypad
+Keypad customKeypad = Keypad( makeKeymap(hexaKeys), rowPins, colPins, ROWS, COLS);
+///////////////////////declaracion de contadores/////////
+// el primer contador se inicializa en 0 porque al momento de apretar esa tecla se sumara y cambiara a 1 y eso escogera la letra en el metodo conversion letra que contiene un switch
+int cont_abc = 0; // 0 para a, 1 para b, 2 para c
+int cont_def = 3; // 3 para d, 4 para e, 5 para f
+int cont_ghi = 6; // 6 para g, 7 para h, 8 para i
+int cont_jkl = 9; // 9 para j, 10 para k, 11 para l
+int cont_mno = 12; // 12 para m, 13 para n, 14 para o
+int cont_pqrs = 15; // 15 para p, 16 para q, 17 para r,18 para s
+int cont_tuv = 19; // 19 para t, 20 para u, 21 para v
+int cont_wxyz = 22; // 22 para w, 23 para q, 24 para y 25 para z
+char letra;
+int colum;
+int t_espera;
+
+
+void setup() {
+  Timer1.initialize(1000000);
+  Timer1.attachInterrupt(timer);
+  Serial.begin (9600);
+}
+
+void loop() {
+  char customKey = customKeypad.getKey();
+  if (customKey)
+  {
+
+    if (customKey == '7')
+    {
+      Serial.print('1');
+      t_espera = 0; // hay que reiniciar el tiempo de espera en cada tecla para que avance una posicion
+
+    }
+
+    if (customKey == '8')
+    {
+      cont_abc++; // el cont se incrementa en 1
+      conversionabc (cont_abc);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+      /*Serial.print(letra);*/ //no lo pongo aqui porque se imprime cada letra en el serial una seguida de la otra en diferente posicion
+      if (cont_abc >= 3)
+      {
+        cont_abc = 0;
+      }
+      t_espera = 0;
+    }
+
+    if (customKey == '9')
+    {
+
+      cont_def++; // el cont se incrementa en 1
+      conversionabc (cont_def);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_def >= 6)
+      {
+        cont_def = 3;
+      }
+      t_espera = 0;
+    }
+    if (customKey == '4')
+    {
+
+      cont_ghi++; // el cont se incrementa en 1
+      conversionabc (cont_ghi);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_ghi >= 9)
+      {
+        cont_ghi = 6;
+
+      } t_espera = 0;
+    }
+    if (customKey == '5')
+    {
+
+      cont_jkl++; // el cont se incrementa en 1
+      conversionabc (cont_jkl);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_jkl >= 12)
+      {
+        cont_jkl = 9;
+
+      } t_espera = 0;
+    }
+    if (customKey == '6')
+    {
+
+      cont_mno++; // el cont se incrementa en 1
+      conversionabc (cont_mno);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_mno >= 15)
+      {
+        cont_mno = 12;
+
+      } t_espera = 0;
+    }
+    if (customKey == '1')
+    {
+
+      cont_pqrs++; // el cont se incrementa en 1
+      conversionabc (cont_pqrs);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_pqrs >= 19)
+      {
+        cont_pqrs = 15;
+
+      } t_espera = 0;
+    }
+    if (customKey == '2')
+    {
+
+      cont_tuv++; // el cont se incrementa en 1
+      conversionabc (cont_tuv);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_tuv >= 22)
+      {
+        cont_tuv = 19;
+
+      } t_espera = 0;
+    }
+    if (customKey == '3')
+    {
+
+      cont_wxyz++; // el cont se incrementa en 1
+      conversionabc (cont_wxyz);// llamamos al metodo con el parametro que dependera del contador abc en este caso
+
+      if (cont_wxyz >= 26)
+      {
+        cont_wxyz = 22;
+
+      } t_espera = 0;
+    }
+    if (customKey == '#')
+    {
+
+    } t_espera = 0;
+    if (customKey == '0')
+    {
+
+    } t_espera = 0;
+    if (customKey == '*')
+    {
+
+
+    } t_espera = 0;
+  }
+
+
+
+}
+
+
+char conversionabc (int dato)// entra una variable de tipo int que es cada que se vaya sumando un contador entrara el numero de ese contador y eligira la letraque corresponde a ese numero
+{
+
+  switch (dato)// escoge el dato que dependera del parametro int dato que son los distintos contadores
+  {
+    case 1: // se utiliza numeros porque lo que elija depende de los ocntadores que son tipo int
+      letra = 'a';
+      break;
+    case 2:
+      letra = 'b';
+      break;
+    case 3:
+      letra = 'c';
+      break;
+    case 4:
+      letra = 'd';
+      break;
+    case 5:
+      letra = 'e';
+      break;
+    case 6:
+      letra = 'f';
+      break;
+    case 7:
+      letra = 'g';
+      break;
+    case 8:
+      letra = 'h';
+      break;
+    case 9:
+      letra = 'i';
+      break;
+    case 10:
+      letra = 'j';
+      break;
+    case 11:
+      letra = 'k';
+      break;
+    case 12:
+      letra = 'l';
+      break;
+    case 13:
+      letra = 'm';
+      break;
+    case 14:
+      letra = 'n';
+      break;
+    case 15:
+      letra = '0';
+      break;
+    case 16:
+      letra = 'p';
+      break;
+    case 17:
+      letra = 'q';
+      break;
+    case 18:
+      letra = 'r';
+      break;
+    case 19:
+      letra = 's';
+      break;
+    case 20:
+      letra = 't';
+      break;
+    case 21:
+      letra = 'u';
+      break;
+    case 22:
+      letra = 'v';
+      break;
+    case 23:
+      letra = 'w';
+      break;
+    case 24:
+      letra = 'x';
+      break;
+    case 25:
+      letra = 'y';
+      break;
+    case 26:
+      letra = 'z';
+      break;
+
+
+  } return letra; // retorna una letra al ingresar un numero
+}
+void timer ()//interrupcion
+{
+  t_espera++;
+  if (t_espera == 2)
+  {
+    Serial.print (letra); // si lo pongo aqui solo pasado el tiempo de espera cambiara la posicion en el serial
+    cont_abc = 0;
+    cont_abc = 0; // 0 para a, 1 para b, 2 para c
+    cont_def = 3; // 3 para d, 4 para e, 5 para f
+    cont_ghi = 6; // 6 para g, 7 para h, 8 para i
+    cont_jkl = 9; // 9 para j, 10 para k, 11 para l
+    cont_mno = 12; // 12 para m, 13 para n, 14 para o
+    cont_pqrs = 15; // 15 para p, 16 para q, 17 para r,18 para s
+    cont_tuv = 19; // 19 para t, 20 para u, 21 para v
+    cont_wxyz = 22; // 22 para w, 23 para q, 24 para y 25 para z
+  }
+
+
+}
+
+
+
+
