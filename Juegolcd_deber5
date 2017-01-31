@@ -1,0 +1,65 @@
+//////////////////// UNIVERSIDAD TECNICA DEL NORTE /////////////////////////////
+///////////// FACULTA DE INGENIERIA EN CIENCIAS APLICADAS /////////////////////
+
+///NOMBRE: Mejia Mishel /////////
+/// CARRERA: CIERCOM //////////////////
+/// FECHA: 19 DE ENERO DEL 2017 //////////////
+
+
+
+//DECLARAR VARIABLES GLOBALES
+//Pantalla LCD
+#include <LiquidCrystal.h>
+LiquidCrystal lcd(9, 8, 7, 6, 5, 4); //primer pin rs, luego pin de enable,d4,d5,d6,d7
+
+int i = 0; //contador1
+int j = 0; //contador2
+String dato;
+int tamano = 0;
+
+
+
+
+void setup() {
+  Serial.begin(9600); //configuracion de cx
+  lcd.begin (16, 2);
+  //VARIABLES ENTRADA
+
+  lcd.begin(16, 2);               // Configura el LCD con 16 columnas y 2 filas
+
+  lcd.clear();           // borrar Pantalla
+}
+
+void loop()
+{
+
+  Serial.println ("Ingrese una palabra");
+  delay (4000);
+  dato = Serial.readString ();//lee una cadena de caracteres
+  tamano = (dato.length () + 1); //saca el tamaño de la palabra ingresada en dato
+  char mensaje [tamano];//vector de tipo char con el tamaño de la pabra
+  dato.toCharArray (mensaje, tamano ); //vector, tamaño
+  for (i; i < tamano ; i++)
+  {
+    lcd.setCursor (i, j);//columna fila
+    lcd.print (mensaje [i]);
+    delay (200) ;
+    lcd.setCursor (i + 1, j - 1); //columna fila
+    lcd.print (mensaje [i]);
+    delay (200) ;
+  }// i = 0;
+  for (i; i >= 0 ; i--)
+  {
+    lcd.setCursor (i, j);//columna fila
+    lcd.print (mensaje [i]);
+    lcd.print (' ');
+    delay (200) ;
+    lcd.setCursor (i + 1, j - 1); //columna fila
+    lcd.print (mensaje [i]);
+    lcd.print (' ');
+    delay (200) ;
+
+  } lcd.clear ();
+} 
+
+
